@@ -5,7 +5,7 @@ const GardenLogPage = () => {
   const [gardenLogs, setGardenLogs] = useState([]);
   const [newEntry, setNewEntry] = useState({
     plantName: "",
-    datePlanted: "",
+    datePlanted: new Date().toISOString().split("T")[0],
     notes: "",
     status: "Growing",
   });
