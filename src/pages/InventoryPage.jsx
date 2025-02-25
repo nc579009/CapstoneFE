@@ -27,19 +27,26 @@ function InventoryPage() {
       };
     
       const handleChange = (e) => {
+        console.log(e.target.name, e.target.value);
         setNewItem({ ...newItem, [e.target.name]: e.target.value });
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:5000/api/inventory", newItem)
-          .then(() => {
-            fetchInventory(); // Refresh list
-            setNewItem({ name: "", category: "tool", quantity: 1, purchasedDate: new Date().toISOString().split("T")[0], status: "Available" });
-          })
-          .catch((error) => console.error("Error adding item:", error));
+      
+        try {
+          const response = await axios.post("http://localhost:5000/api/inventory", newItem, {
+            headers: { "Content-Type": "application/json" },
+          });
+      
+          console.log("Added Item:", response.data);
+          fetchInventory(); // Refresh inventory list
+          resetForm(); // Reset form fields
+        } catch (error) {
+          console.error("Error adding item:", error.response?.data || error.message);
+        }
       };
-    
+      
 
     return (
       <div>
@@ -56,6 +63,7 @@ function InventoryPage() {
 
         {/* Category Dropdown */}
         <select name="category" value={newItem.category} onChange={handleChange} required>
+            <option value = "" disabled selected > Select Category  </option>
           {categoryOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
           ))}
@@ -88,6 +96,20 @@ function InventoryPage() {
 
         <button type="submit">Add Item</button>
       </form>
+
+      {inventory.length > 0 ? (
+        <ul>
+          {inventory.map((item) => (
+            <li key={item._id}>
+              {item.name} - {item.quantity} ({item.category}) - {item.status}{" "}
+              <button onClick={() => handleEdit(item)}>Edit</button>
+              <button onClick={() => handleDelete(item._id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No inventory items available.</p>
+      )}
 
       </div>
     );
