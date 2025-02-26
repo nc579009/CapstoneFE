@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "../css/navbar.css";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -9,10 +10,13 @@ const NavBar = () => {
   };
 
   return (
-    <nav style={{ display: "flex", justifyContent: "space-between", padding: "10px", background: "#ddd" }}>
-      <button onClick={() => navigate("/")}>Home</button>
-      <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-      <button onClick={handleLogout}>Logout</button>
+    <nav className="navbar">
+      <a href="/" className="navbar-logo">Homestead APP</a>
+      <ul className="nav-links">
+        <li><button className="nav-button" onClick={() => navigate("/")}>Home</button></li>
+        <li><button className="nav-button" onClick={() => navigate("/dashboard")}>Dashboard</button></li>
+        <li><button className="nav-button logout-button" onClick={handleLogout}>Logout</button></li>
+      </ul>
     </nav>
   );
 };

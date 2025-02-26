@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../components/NavBar";
+import InventoryTable from "../components/InventoryTable"; // Importing new table component
 
 function InventoryPage() {
   const [inventory, setInventory] = useState([]);
@@ -12,7 +13,7 @@ function InventoryPage() {
     status: "Available"
   });
 
-  const [editingItem, setEditingItem] = useState(null); // Track item being edited
+  const [editingItem, setEditingItem] = useState(null);
 
   const categoryOptions = ["tool", "seed", "supply", "plant"];
   const statusOptions = ["Growing", "Ready to Harvest", "Harvested", "Available"];
@@ -50,18 +51,16 @@ function InventoryPage() {
 
     try {
       if (editingItem) {
-        // If editing, update the existing item
         await axios.put(`http://localhost:5000/api/inventory/${editingItem._id}`, newItem, {
           headers: { "Content-Type": "application/json" },
         });
       } else {
-        // Otherwise, add a new item
         await axios.post("http://localhost:5000/api/inventory", newItem, {
           headers: { "Content-Type": "application/json" },
         });
       }
 
-      fetchInventory(); // Refresh inventory list
+      fetchInventory();
       resetForm();
     } catch (error) {
       console.error("Error saving item:", error.response?.data || error.message);
@@ -69,14 +68,14 @@ function InventoryPage() {
   };
 
   const handleEdit = (item) => {
-    setNewItem(item); // Populate form with selected item
+    setNewItem(item);
     setEditingItem(item);
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/inventory/${id}`);
-      fetchInventory(); // Refresh inventory list
+      fetchInventory();
     } catch (error) {
       console.error("Error deleting item:", error.response?.data || error.message);
     }
@@ -96,7 +95,6 @@ function InventoryPage() {
           required
         />
 
-        {/* Category Dropdown */}
         <select name="category" value={newItem.category} onChange={handleChange} required>
           <option value="" disabled>Select Category</option>
           {categoryOptions.map((option) => (
@@ -113,7 +111,6 @@ function InventoryPage() {
           required
         />
 
-        {/* Date Picker for Purchased Date */}
         <input
           type="date"
           name="purchasedDate"
@@ -122,7 +119,6 @@ function InventoryPage() {
           required
         />
 
-        {/* Status Dropdown */}
         <select name="status" value={newItem.status} onChange={handleChange} required>
           {statusOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -133,19 +129,7 @@ function InventoryPage() {
         {editingItem && <button type="button" onClick={resetForm}>Cancel Edit</button>}
       </form>
 
-      {inventory.length > 0 ? (
-        <ul>
-          {inventory.map((item) => (
-            <li key={item._id}>
-              {item.name} - {item.quantity} ({item.category}) - {item.status}{" "}
-              <button onClick={() => handleEdit(item)}>Edit</button>
-              <button onClick={() => handleDelete(item._id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No inventory items available.</p>
-      )}
+      <InventoryTable inventory={inventory} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 }

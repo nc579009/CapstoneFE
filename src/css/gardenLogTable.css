@@ -1,0 +1,59 @@
+/* gardenLogTable.css */
+.table-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #176A66; /* Teal green background */
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #982424; /* Deep red for contrast */
+    color: white;
+    font-family: "Lora", serif;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 3px solid #21543E; /* Dark green border */
+  }
+  
+  th {
+    background-color: #272838; /* Dark gray-blue header */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #0E2C1D; /* Very dark green for alternating rows */
+  }
+  
+  tr:hover {
+    background-color: #21543E; /* Soft green hover effect */
+    transition: 0.3s ease-in-out;
+  }
+  
+  button {
+    background-color: #272838;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    margin-right: 6px;
+  }
+  
+  button:hover {
+    background-color: #176A66;
+    transform: scale(1.07);
+  }
+  

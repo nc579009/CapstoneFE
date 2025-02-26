@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../components/NavBar";
+import GardenLogTable from "../components/GardenLogTable"; // Importing table component
 
 const GardenLogPage = () => {
   const [gardenLogs, setGardenLogs] = useState([]);
@@ -27,15 +28,6 @@ const GardenLogPage = () => {
     fetchGardenLogs();
   }, []);
 
-  // Format date for display (e.g., Feb 19, 2025)
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   // Handle input changes
   const handleChange = (e) => {
     setNewEntry({ ...newEntry, [e.target.name]: e.target.value });
@@ -46,20 +38,18 @@ const GardenLogPage = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        // Update existing entry
         await axios.put(`http://localhost:5000/api/garden/${editingId}`, newEntry);
       } else {
-        // Add new entry
         await axios.post("http://localhost:5000/api/garden", newEntry);
       }
 
-      fetchGardenLogs(); // Refresh list
-      setNewEntry({ 
-        plantName: "", 
-        plantedDate: new Date().toISOString().split("T")[0], 
-        lastWatered: new Date().toISOString().split("T")[0], 
-        growthStage: "seedling", 
-        notes: "" 
+      fetchGardenLogs();
+      setNewEntry({
+        plantName: "",
+        plantedDate: new Date().toISOString().split("T")[0],
+        lastWatered: new Date().toISOString().split("T")[0],
+        growthStage: "seedling",
+        notes: "",
       });
       setEditingId(null);
     } catch (error) {
@@ -71,8 +61,8 @@ const GardenLogPage = () => {
   const handleEdit = (entry) => {
     setNewEntry({
       plantName: entry.plantName,
-      plantedDate: entry.plantedDate.split("T")[0], // Convert to YYYY-MM-DD format
-      lastWatered: entry.lastWatered.split("T")[0], // Convert to YYYY-MM-DD format
+      plantedDate: entry.plantedDate.split("T")[0],
+      lastWatered: entry.lastWatered.split("T")[0],
       growthStage: entry.growthStage,
       notes: entry.notes,
     });
@@ -91,10 +81,9 @@ const GardenLogPage = () => {
 
   return (
     <div>
-     <NavBar />
+      <NavBar />
       <h1>Garden Log</h1>
 
-      {/* Form for adding/updating garden entries */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -137,18 +126,7 @@ const GardenLogPage = () => {
         <button type="submit">{editingId ? "Update Entry" : "Add Entry"}</button>
       </form>
 
-      {/* Display garden log entries */}
-      <ul>
-        {gardenLogs.map((entry) => (
-          <li key={entry._id}>
-            <strong>{entry.plantName}</strong> - Planted on {formatDate(entry.plantedDate)} - 
-            Last Watered: {formatDate(entry.lastWatered)} - Growth Stage: {entry.growthStage}
-            <p>{entry.notes}</p>
-            <button onClick={() => handleEdit(entry)}>Edit</button>
-            <button onClick={() => handleDelete(entry._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <GardenLogTable gardenLogs={gardenLogs} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 };
