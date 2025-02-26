@@ -1,0 +1,23 @@
+/* banner.css */
+.banner {
+    height: 300px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #982424;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: "Trebuchet MS", serif;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+  }
+  

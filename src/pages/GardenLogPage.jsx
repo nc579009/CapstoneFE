@@ -3,6 +3,7 @@ import axios from "axios";
 import NavBar from "../components/NavBar";
 import GardenLogTable from "../components/GardenLogTable"; // Importing table component
 
+
 const GardenLogPage = () => {
   const [gardenLogs, setGardenLogs] = useState([]);
   const [newEntry, setNewEntry] = useState({
