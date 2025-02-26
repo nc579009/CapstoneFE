@@ -1,7 +1,7 @@
 # Homestead Hero
 
 #### An app to help track homestead inventory and gadening scheduler
-<img src="path to your app screenshot" alt="Description of Screenshot"/>
+<img src="./src/assets/Images/Screenshot 2025-02-26 at 4.04.06 PM.png" alt="Description of Screenshot"/>
 
 <img src="path to your gif/video" style="width:100vw; height:100vh" alt="Text describing your video"/>
 
