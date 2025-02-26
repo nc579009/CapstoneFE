@@ -1,57 +1,92 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import NavBar from "../components/NavBar";
 
 function InventoryPage() {
-    
-    const [inventory, setInventory] = useState([]);
-    const [newItem, setNewItem] = useState({
+  const [inventory, setInventory] = useState([]);
+  const [newItem, setNewItem] = useState({
+    name: "",
+    category: "",
+    quantity: 1,
+    purchasedDate: new Date().toISOString().split("T")[0],
+    status: "Available"
+  });
+
+  const [editingItem, setEditingItem] = useState(null); // Track item being edited
+
+  const categoryOptions = ["tool", "seed", "supply", "plant"];
+  const statusOptions = ["Growing", "Ready to Harvest", "Harvested", "Available"];
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  const fetchInventory = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/inventory");
+      setInventory(response.data);
+    } catch (error) {
+      console.error("Error fetching inventory:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setNewItem({ ...newItem, [e.target.name]: e.target.value });
+  };
+
+  const resetForm = () => {
+    setNewItem({
       name: "",
       category: "",
       quantity: 1,
       purchasedDate: new Date().toISOString().split("T")[0],
       status: "Available"
     });
+    setEditingItem(null);
+  };
 
-    const categoryOptions = ["tool", "seed", "supply", "plant"];
-    const statusOptions = ["Growing", "Ready to Harvest", "Harvested", "Available"];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+      if (editingItem) {
+        // If editing, update the existing item
+        await axios.put(`http://localhost:5000/api/inventory/${editingItem._id}`, newItem, {
+          headers: { "Content-Type": "application/json" },
+        });
+      } else {
+        // Otherwise, add a new item
+        await axios.post("http://localhost:5000/api/inventory", newItem, {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
 
-    useEffect(() => {
-        fetchInventory();
-      }, []);
-    
-      const fetchInventory = () => {
-        axios.get("http://localhost:5000/api/inventory")
-          .then((response) => setInventory(response.data))
-          .catch((error) => console.error("Error fetching inventory:", error));
-      };
-    
-      const handleChange = (e) => {
-        console.log(e.target.name, e.target.value);
-        setNewItem({ ...newItem, [e.target.name]: e.target.value });
-      };
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-      
-        try {
-          const response = await axios.post("http://localhost:5000/api/inventory", newItem, {
-            headers: { "Content-Type": "application/json" },
-          });
-      
-          console.log("Added Item:", response.data);
-          fetchInventory(); // Refresh inventory list
-          resetForm(); // Reset form fields
-        } catch (error) {
-          console.error("Error adding item:", error.response?.data || error.message);
-        }
-      };
-      
+      fetchInventory(); // Refresh inventory list
+      resetForm();
+    } catch (error) {
+      console.error("Error saving item:", error.response?.data || error.message);
+    }
+  };
 
-    return (
-      <div>
-        <h1>Inventory</h1>
-        <form onSubmit={handleSubmit}>
+  const handleEdit = (item) => {
+    setNewItem(item); // Populate form with selected item
+    setEditingItem(item);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/inventory/${id}`);
+      fetchInventory(); // Refresh inventory list
+    } catch (error) {
+      console.error("Error deleting item:", error.response?.data || error.message);
+    }
+  };
+
+  return (
+    <div>
+      <NavBar />
+      <h1>Inventory</h1>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="name"
@@ -63,7 +98,7 @@ function InventoryPage() {
 
         {/* Category Dropdown */}
         <select name="category" value={newItem.category} onChange={handleChange} required>
-            <option value = "" disabled selected > Select Category  </option>
+          <option value="" disabled>Select Category</option>
           {categoryOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
           ))}
@@ -94,7 +129,8 @@ function InventoryPage() {
           ))}
         </select>
 
-        <button type="submit">Add Item</button>
+        <button type="submit">{editingItem ? "Update Item" : "Add Item"}</button>
+        {editingItem && <button type="button" onClick={resetForm}>Cancel Edit</button>}
       </form>
 
       {inventory.length > 0 ? (
@@ -110,10 +146,8 @@ function InventoryPage() {
       ) : (
         <p>No inventory items available.</p>
       )}
+    </div>
+  );
+}
 
-      </div>
-    );
-  }
-  
-  export default InventoryPage;
-  
+export default InventoryPage;

@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import NavBar from "../components/NavBar";
 
 const GardenLogPage = () => {
   const [gardenLogs, setGardenLogs] = useState([]);
   const [newEntry, setNewEntry] = useState({
     plantName: "",
-    datePlanted: new Date().toISOString().split("T")[0],
+    plantedDate: new Date().toISOString().split("T")[0], // Editable planted date
+    lastWatered: new Date().toISOString().split("T")[0], // Editable last watered date
+    growthStage: "seedling",
     notes: "",
-    status: "Growing",
   });
   const [editingId, setEditingId] = useState(null); // Track editing state
 
@@ -25,12 +27,21 @@ const GardenLogPage = () => {
     fetchGardenLogs();
   }, []);
 
+  // Format date for display (e.g., Feb 19, 2025)
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   // Handle input changes
   const handleChange = (e) => {
     setNewEntry({ ...newEntry, [e.target.name]: e.target.value });
   };
 
-  // Add a new entry
+  // Add or update an entry
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -43,7 +54,13 @@ const GardenLogPage = () => {
       }
 
       fetchGardenLogs(); // Refresh list
-      setNewEntry({ plantName: "", datePlanted: "", notes: "", status: "Growing" });
+      setNewEntry({ 
+        plantName: "", 
+        plantedDate: new Date().toISOString().split("T")[0], 
+        lastWatered: new Date().toISOString().split("T")[0], 
+        growthStage: "seedling", 
+        notes: "" 
+      });
       setEditingId(null);
     } catch (error) {
       console.error("Error saving garden log:", error);
@@ -52,7 +69,13 @@ const GardenLogPage = () => {
 
   // Edit an entry
   const handleEdit = (entry) => {
-    setNewEntry(entry);
+    setNewEntry({
+      plantName: entry.plantName,
+      plantedDate: entry.plantedDate.split("T")[0], // Convert to YYYY-MM-DD format
+      lastWatered: entry.lastWatered.split("T")[0], // Convert to YYYY-MM-DD format
+      growthStage: entry.growthStage,
+      notes: entry.notes,
+    });
     setEditingId(entry._id);
   };
 
@@ -68,6 +91,7 @@ const GardenLogPage = () => {
 
   return (
     <div>
+     <NavBar />
       <h1>Garden Log</h1>
 
       {/* Form for adding/updating garden entries */}
@@ -80,24 +104,36 @@ const GardenLogPage = () => {
           onChange={handleChange}
           required
         />
+
+        <label>Planted Date:</label>
         <input
           type="date"
-          name="datePlanted"
-          value={newEntry.datePlanted}
+          name="plantedDate"
+          value={newEntry.plantedDate}
           onChange={handleChange}
-          required
         />
+
+        <label>Last Watered:</label>
+        <input
+          type="date"
+          name="lastWatered"
+          value={newEntry.lastWatered}
+          onChange={handleChange}
+        />
+
+        <select name="growthStage" value={newEntry.growthStage} onChange={handleChange}>
+          <option value="seedling">Seedling</option>
+          <option value="vegetative">Vegetative</option>
+          <option value="flowering">Flowering</option>
+          <option value="harvest">Harvest</option>
+        </select>
+
         <textarea
           name="notes"
           placeholder="Notes"
           value={newEntry.notes}
           onChange={handleChange}
         />
-        <select name="status" value={newEntry.status} onChange={handleChange}>
-          <option value="Growing">Growing</option>
-          <option value="Ready to Harvest">Ready to Harvest</option>
-          <option value="Harvested">Harvested</option>
-        </select>
         <button type="submit">{editingId ? "Update Entry" : "Add Entry"}</button>
       </form>
 
@@ -105,7 +141,8 @@ const GardenLogPage = () => {
       <ul>
         {gardenLogs.map((entry) => (
           <li key={entry._id}>
-            <strong>{entry.plantName}</strong> - Planted on {entry.datePlanted} - {entry.status}
+            <strong>{entry.plantName}</strong> - Planted on {formatDate(entry.plantedDate)} - 
+            Last Watered: {formatDate(entry.lastWatered)} - Growth Stage: {entry.growthStage}
             <p>{entry.notes}</p>
             <button onClick={() => handleEdit(entry)}>Edit</button>
             <button onClick={() => handleDelete(entry._id)}>Delete</button>
