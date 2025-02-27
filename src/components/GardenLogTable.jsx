@@ -33,7 +33,9 @@ function GardenLogTable({ gardenLogs, onEdit, onDelete }) {
                 <td>{entry.growthStage}</td>
                 <td>{entry.notes}</td>
                 <td>
-                  <button onClick={() => onEdit(entry)}>Edit</button>
+                  <button onClick={() => onEdit(entry)}>Edit</button> 
+                  <br />
+                  <br />
                   <button onClick={() => onDelete(entry._id)}>Delete</button>
                 </td>
               </tr>

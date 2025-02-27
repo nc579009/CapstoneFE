@@ -6,8 +6,7 @@
 <img src="path to your gif/video" style="width:100vw; height:100vh" alt="Text describing your video"/>
 
 ## Description
-Description of your app. 
-Ex: Connect Four: a two player connection game. First player to get four of the same colored checkers in a row either horizontally, vertically or diagonally wins.
+An app that gives the user a place to organize and keep track of gardening 
 
 ## Table of Contents
 * [Technologies Used](#technologiesused)
@@ -23,7 +22,7 @@ Ex: Connect Four: a two player connection game. First player to get four of the 
 * React
 * Nodejs
 * JavaScript
-* CSS3
+* CSS
 
 
 ## Features

@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -39,4 +39,14 @@
 
 .read-the-docs {
   color: #888;
+}
+
+body {
+  background-image: url("./assets/blurry-gradient-haikei.png"); /* Path to your image */
+  background-size: cover; /* Cover the entire screen */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repeating */
+  height: 100vh; /* Full screen height */
+  margin: 0;
+  
 }

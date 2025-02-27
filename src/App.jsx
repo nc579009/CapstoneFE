@@ -5,7 +5,7 @@ import InventoryPage from "./pages/InventoryPage";
 import GardenLogPage from "./pages/GardenLogPage";
 import NotFound from "./pages/NotFound";
 import Banner from "./components/Banner";
-
+import "./App.css";
 function App() {
   return (
     <div>
