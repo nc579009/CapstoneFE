@@ -21,7 +21,7 @@ Garden Manager is a web-based application designed for gardening enthusiasts who
 * MongoDB
 * Express
 * React (with Vite)
-* Node.js
+* Node.jsø
 * JavaScript
 * CSS3
 
@@ -36,7 +36,9 @@ Garden Manager is a web-based application designed for gardening enthusiasts who
 
 ## <a name="erd"></a>ERD Images & DB Structure
 * The Entity Relationship Diagram (ERD) showcasing the database structure.
-  <img src="path-to-erd-image" alt="ERD for Garden Manager">
+  <img src="![User Schema](src/assets/Images/user.png)" alt="User Schema">
+  <img src="![Inventory Schema]](src/assets/Images/Inventory.png)" alt="Inventory Schema">
+  <img src="![Gardern Schema](src/assets/Images/Garden.png)" alt="Garde Log Svhema">
 
 ## <a name="nextsteps"></a>Project Next Steps
 #### Future Features
