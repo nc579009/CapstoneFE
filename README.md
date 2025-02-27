@@ -1,9 +1,9 @@
 # Homestead Hero
 
 #### An app to help track homestead inventory and gadening scheduler
-<img src="./src/assets/Images/src/assets/Images/Screenshot 2025-02-26 at 10.37.37 PM.png" alt="Photo of the homescreen of the Homestead Hero App"/>
+<img src="/src/assets/Images/Screenshot 2025-02-26 at 10.37.37 PM.png" alt="Photo of the homescreen of the Homestead Hero App"/>
 
-<img src="path to your gif/video" style="width:100vw; height:100vh" alt="Text describing your video"/>
+<img src="src/assets/Images/Screenshot 2025-02-26 at 10.41.04 PM.png" style="width:100vw; height:100vh" alt="Text describing your video"/>
 
 ## Description
 Garden Manager is a web-based application designed for gardening enthusiasts who want to keep a detailed log of their plants, track watering schedules, and manage their gardening inventory. Users can easily monitor plant growth, update logs, and keep an eye on supply levels.
