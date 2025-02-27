@@ -37,6 +37,8 @@ function HomePage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <br/>
+          <br/>
         </div>
         <button type="submit">Login</button>
       </form>

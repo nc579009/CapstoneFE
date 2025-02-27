@@ -24,7 +24,7 @@ function InventoryPage() {
 
   const fetchInventory = async () => {
     try {
-      const response = await axios.get("https://homesteadbe.onrender.com/api/inventory");
+      const response = await axios.get("http://localhost:5000/api/inventory");
       setInventory(response.data);
     } catch (error) {
       console.error("Error fetching inventory:", error);
@@ -51,11 +51,11 @@ function InventoryPage() {
 
     try {
       if (editingItem) {
-        await axios.put(`https://homesteadbe.onrender.com/api/inventory/${editingItem._id}`, newItem, {
+        await axios.put(`http://localhost:5000/api/inventory/${editingItem._id}`, newItem, {
           headers: { "Content-Type": "application/json" },
         });
       } else {
-        await axios.post("https://homesteadbe.onrender.com/api/inventory", newItem, {
+        await axios.post("http://localhost:5000/api/inventory", newItem, {
           headers: { "Content-Type": "application/json" },
         });
       }
@@ -74,7 +74,7 @@ function InventoryPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://homesteadbe.onrender.com/api/inventory/${id}`);
+      await axios.delete(`http://localhost:5000/api/inventory/${id}`);
       fetchInventory();
     } catch (error) {
       console.error("Error deleting item:", error.response?.data || error.message);

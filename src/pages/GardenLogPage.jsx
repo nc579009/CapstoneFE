@@ -18,7 +18,7 @@ const GardenLogPage = () => {
   // Fetch garden log data
   const fetchGardenLogs = async () => {
     try {
-      const response = await axios.get("https://homesteadbe.onrender.com/api/garden");
+      const response = await axios.get("http://localhost:5000/api/garden");
       setGardenLogs(response.data);
     } catch (error) {
       console.error("Error fetching garden logs:", error);
@@ -39,9 +39,9 @@ const GardenLogPage = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`https://homesteadbe.onrender.com/api/garden/${editingId}`, newEntry);
+        await axios.put(`http://localhost:5000/api/garden/${editingId}`, newEntry);
       } else {
-        await axios.post("https://homesteadbe.onrender.com/api/garden", newEntry);
+        await axios.post("http://localhost:5000/api/garden", newEntry);
       }
 
       fetchGardenLogs();
@@ -73,7 +73,7 @@ const GardenLogPage = () => {
   // Delete an entry
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://homesteadbe.onrender.com/api/garden/${id}`);
+      await axios.delete(`http://localhost:5000/api/garden/${id}`);
       fetchGardenLogs();
     } catch (error) {
       console.error("Error deleting entry:", error);
